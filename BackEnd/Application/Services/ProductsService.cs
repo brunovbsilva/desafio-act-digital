@@ -1,32 +1,41 @@
 ﻿using Domain.Entities;
+using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
+using Domain.Models.Dtos;
+using Domain.Models.Requests;
 
 namespace Application.Services;
 
-internal class ProductsService : IProductsService
+internal class ProductsService(IProductsRepository repository) : IProductsService
 {
-    public async Task<IEnumerable<Product>> GetAsync()
+    public async Task<IEnumerable<ProductDto>> GetAsync(GetProductsRequest request)
     {
-        throw new NotImplementedException();
+        var list = await repository.GetAsync(x =>
+            (string.IsNullOrWhiteSpace(request.Name) || x.Name.Contains(request.Name) || request.Name.Contains(request.Name)) &&
+            (string.IsNullOrWhiteSpace(request.Description) || x.Description.Contains(request.Description) || request.Description.Contains(request.Description)) &&
+            (request.MinPrice == null || request.MinPrice < x.Price) &&
+            (request.MaxPrice == null || request.MaxPrice > x.Price)
+        );
+        
+        return list.Select(x => (ProductDto)x);
     }
 
-    public async Task<Product> GetAsync(Guid id)
+    public async Task<ProductDto> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var entity = await repository.FindAsync(id);
+        if (entity == null) throw new ArgumentException("Entity not found");
+        return entity;
     }
 
-    public async Task CreateAsync()
+    public Task CreateAsync(ProductDto product) => repository.InsertAsync(new Product(product));
+
+    public async Task PatchAsync(Guid id, ProductDto product)
     {
-        throw new NotImplementedException();
+        var entity = await repository.FindAsync(id);
+        if (entity == null)  throw new ArgumentException("Entity not found");
+        entity.Update(product);
+        await repository.SaveChangesAsync();
     }
 
-    public async Task PatchAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task DeleteAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public Task DeleteAsync(Guid id) => repository.DeleteAsync(id);
 }
