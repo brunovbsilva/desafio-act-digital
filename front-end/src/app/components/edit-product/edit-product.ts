@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-edit-product',
   imports: [],
   templateUrl: './edit-product.html',
-  styleUrl: './edit-product.scss'
+  styleUrl: './edit-product.scss',
 })
-export class EditProduct {
-
-}
+export class EditProduct {}

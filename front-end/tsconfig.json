@@ -18,6 +18,7 @@
       "@models/*": ["./src/app/models/*"],
       "@services/*": ["./src/app/services/*"],
       "@components/*": ["./src/app/components/*"],
+      "@helpers/*": ["./src/app/shared/helpers/*"]
     }
   },
   "angularCompilerOptions": {
