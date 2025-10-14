@@ -1,0 +1,14 @@
+services:
+  front-end:
+    build: ./front-end
+    container_name: front-end
+    ports:
+      - 4200:80
+    depends_on:
+      - back-end
+
+  back-end:
+    build: ./BackEnd
+    container_name: back-end
+    ports:
+      - 5000:8080
