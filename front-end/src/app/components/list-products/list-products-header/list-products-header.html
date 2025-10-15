@@ -1,0 +1,24 @@
+<p-card class="filter-card">
+  <form [formGroup]="form$" class="form-group">
+    <p-float-label variant="on">
+      <input type="text" id="name_filter" pInputText formControlName="name" />
+      <label for="name_filter">Name</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <input type="text" id="description_filter" pInputText formControlName="description" />
+      <label for="description_filter">Description</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <p-input-number id="min_filter" formControlName="minPrice" />
+      <label for="min_filter">Min Price</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <p-input-number id="max_filter"formControlName="maxPrice" />
+      <label for="max_filter">Max Price</label>
+    </p-float-label>
+  </form>
+  <div class="buttons">
+    <p-button label="Filter" (click)="emitFilter()" [disabled]="form$.invalid"/>
+    <p-button label="Create" (click)="createClicked.emit()"/>
+  </div>
+</p-card>

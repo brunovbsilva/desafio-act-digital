@@ -36,40 +36,30 @@ export abstract class BaseService {
     }
   }
 
-  protected async GetAsync<T>(path: string, params?: object, headers?: HttpHeaders): Promise<T> {
+  protected async GetAsync<T>(path: string, params?: object): Promise<T> {
     return this.ExecuteAsync<T>(
       this.http.get<T | ErrorResponse>(
-        `${this.url}${path ? '/' + path : ''}${params ? '?' + QueryStringHelper.MapParams(params) : ''}`,
-        { headers },
+        `${this.url}${path ? '/' + path : ''}${params ? '?' + QueryStringHelper.MapParams(params) : ''}`
       ),
     );
   }
 
-  protected async PostAsync<T>(path: string, params?: object, headers?: HttpHeaders): Promise<T> {
+  protected async PostAsync<T>(path: string, params?: object): Promise<T> {
     return this.ExecuteAsync<T>(
-      this.http.post<T | ErrorResponse>(`${this.url}${path ? '/' + path : ''}`, params, {
-        headers,
-      }),
+      this.http.post<T | ErrorResponse>(`${this.url}${path ? '/' + path : ''}`, params),
     );
   }
 
-  protected async PatchAsync<T>(
-    path: string,
-    params?: object,
-    headers?: HttpHeaders,
-  ): Promise<T | ErrorResponse> {
-    return this.ExecuteAsync<T>(
-      this.http.patch<T | ErrorResponse>(`${this.url}${path ? '/' + path : ''}`, params, {
-        headers,
-      }),
+  protected async PatchAsync(path: string, params?: object): Promise<void> {
+    return this.ExecuteAsync<void>(
+      this.http.patch<void | ErrorResponse>(`${this.url}${path ? '/' + path : ''}`, params),
     );
   }
 
-  protected async DeleteAsync<T>(path: string, params?: object, headers?: HttpHeaders): Promise<T> {
-    return this.ExecuteAsync<T>(
-      this.http.delete<T | ErrorResponse>(
-        `${this.url}${path ? '/' + path : ''}${params ? '?' + QueryStringHelper.MapParams(params) : ''}`,
-        { headers },
+  protected async DeleteAsync(path: string, params?: object): Promise<void> {
+    return this.ExecuteAsync<void>(
+      this.http.delete<void | ErrorResponse>(
+        `${this.url}${path ? '/' + path : ''}${params ? '?' + QueryStringHelper.MapParams(params) : ''}`
       ),
     );
   }

@@ -1,6 +1,10 @@
+.filter-card {
+  margin-bottom: 1rem;
+}
+
 .form-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: .75rem;
 }

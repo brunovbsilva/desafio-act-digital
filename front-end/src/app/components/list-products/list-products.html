@@ -1,1 +1,72 @@
-<p>list-products works!</p>
+<app-list-products-header (createClicked)="openDialogCreate()" (filter)="setProducts($event)" />
+
+@if (products().length) {
+  <p-table [value]="products()">
+    <ng-template #header>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.price/100 | currency }}</td>
+        <td>
+          <p-button text rounded icon="pi pi-pencil" (click)="openDialogEdit(product)" />
+          <p-button text rounded icon="pi pi-trash" (click)="deleteProduct(product.id)" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+}
+@else {
+  <h2>
+    No content, please, adjust the filter or create a product.
+  </h2>
+}
+
+
+
+<p-dialog header="Edit product" modal [(visible)]="visibleEdit">
+  <form [formGroup]="editForm$" class="form-group">
+    <p-float-label variant="on">
+      <input type="text" id="name_edit" pInputText formControlName="name" />
+      <label for="name_edit">Name</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <input type="text" id="description_edit" pInputText formControlName="description" />
+      <label for="description_edit">Description</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <p-input-number id="price_edit" formControlName="price" />
+      <label for="price_edit">Price</label>
+    </p-float-label>
+  </form>
+  <div class="buttons">
+    <p-button label="save" (click)="editProduct()" [disabled]="editForm$.invalid" />
+  </div>
+</p-dialog>
+
+<p-dialog header="Create product" modal [(visible)]="visibleCreate">
+  <form [formGroup]="createForm$" class="form-group">
+    <p-float-label variant="on">
+      <input type="text" id="name_create" pInputText formControlName="name" />
+      <label for="name_create">Name</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <input type="text" id="description_create" pInputText formControlName="description" />
+      <label for="description_create">Description</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <p-input-number id="price_create" formControlName="price" />
+      <label for="price_create">Price</label>
+    </p-float-label>
+  </form>
+  <div class="buttons">
+    <p-button label="create" (click)="createProduct()" [disabled]="createForm$.invalid" />
+  </div>
+</p-dialog>
