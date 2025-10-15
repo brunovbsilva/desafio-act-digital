@@ -11,10 +11,10 @@ internal class ProductsService(IProductsRepository repository) : IProductsServic
     public async Task<IEnumerable<ProductDto>> GetAsync(GetProductsRequest request)
     {
         var list = await repository.GetAsync(x =>
-            (string.IsNullOrWhiteSpace(request.Name) || x.Name.Contains(request.Name) || request.Name.Contains(request.Name)) &&
-            (string.IsNullOrWhiteSpace(request.Description) || x.Description.Contains(request.Description) || request.Description.Contains(request.Description)) &&
-            (request.MinPrice == null || request.MinPrice < x.Price) &&
-            (request.MaxPrice == null || request.MaxPrice > x.Price)
+            (string.IsNullOrWhiteSpace(request.Name) || request.Name.Contains(x.Name) || x.Name.Contains(request.Name)) &&
+            (string.IsNullOrWhiteSpace(request.Description) || request.Description.Contains(x.Description) || x.Description.Contains(request.Description)) &&
+            (request.MinPrice == null || request.MinPrice == 0 || request.MinPrice < x.Price) &&
+            (request.MaxPrice == null || request.MaxPrice == 0 || request.MaxPrice > x.Price)
         );
         
         return list.Select(x => (ProductDto)x);
